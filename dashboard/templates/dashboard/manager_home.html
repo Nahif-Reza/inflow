@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-12 px-6">
+  <div class="max-w-7xl mx-auto">
+    <!-- Greeting -->
+    <h1 class="text-4xl font-extrabold text-gray-900 mb-8">Welcome back, {{ request.user.first_name|default:request.user.username }} 👋</h1>
+    <p class="text-gray-600 mb-12">Here's an overview of your store's performance and alerts.</p>
+
+    <!-- Dashboard Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+      <!-- Total Products -->
+      <a href="{% url 'product_list' %}" class="block bg-white rounded-3xl shadow-md p-8 flex flex-col items-center hover:shadow-xl transition-shadow cursor-pointer">
+        <div class="text-blue-500 mb-4">
+          <!-- Heroicons: cube icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 6l-8 4-8-4m16-6v6a2 2 0 002 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2v-6a2 2 0 002-2V7" />
+          </svg>
+        </div>
+        <h2 class="text-2xl font-semibold text-gray-800">Inventory</h2>
+        <p class="text-4xl font-bold text-blue-600 mt-2">{{ total_products }}</p>
+        <p class="text-gray-500 mt-2 text-center">All items listed in inventory</p>
+      </a>
+
+      <!-- Total Orders -->
+      <a href="{% url 'all_orders' %}" class="bg-white rounded-3xl shadow-md p-8 flex flex-col items-center hover:shadow-xl transition-shadow cursor-pointer">
+        <div class="text-green-500 mb-4">
+          <!-- Heroicons: shopping cart -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4" />
+            <circle cx="7" cy="21" r="2" />
+            <circle cx="17" cy="21" r="2" />
+          </svg>
+        </div>
+        <h2 class="text-2xl font-semibold text-gray-800">Total Orders</h2>
+        <p class="text-4xl font-bold text-green-600 mt-2">{{ total_orders }}</p>
+        <p class="text-gray-500 mt-2 text-center">Orders placed so far</p>
+      </a>
+
+      <!-- Ledger -->
+      <div class="bg-white rounded-3xl shadow-md p-8 flex flex-col items-center hover:shadow-xl transition-shadow cursor-pointer">
+        <div class="text-yellow-500 mb-4">
+            <!-- Ledger Icon (Dollar Sign) -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3m0-6v12m0-6c1.657 0 3-1.343 3-3s-1.343-3-3-3" />
+            </svg>
+        </div>
+        <h2 class="text-2xl font-semibold text-gray-800 text-center">Ledger</h2>
+        <p class="text-gray-500 mt-2 text-center">Details of Customer and Supplier trasnaction</p>
+      </div>
+
+      <!-- Forecast -->
+      <div class="bg-white rounded-3xl shadow-md p-8 flex flex-col items-center hover:shadow-xl transition-shadow cursor-pointer">
+        <div class="text-red-500 mb-4">
+              <!-- Heroicons: chart-bar -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 3v18h18M18 17v-6M13 17v-3M8 17v-9" />
+              </svg>
+        </div>
+        <h2 class="text-2xl font-semibold text-gray-800">Forecast</h2>
+        <p class="text-gray-500 mt-2 text-center">Forecasting By Months</p>
+      </div>
+
+      <!-- Total Revenue -->
+      <div class="bg-white rounded-3xl shadow-md p-8 flex flex-col items-center hover:shadow-xl transition-shadow cursor-pointer sm:col-span-2 lg:col-span-4">
+        <div class="text-purple-600 mb-4">
+          <!-- Heroicons: currency dollar -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8v8" />
+          </svg>
+        </div>
+        <h2 class="text-3xl font-semibold text-gray-800">Total Revenue</h2>
+        <p class="text-5xl font-extrabold text-purple-700 mt-3">${{ total_revenue }}</p>
+        <p class="text-gray-500 mt-2 text-center">All-time income</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
