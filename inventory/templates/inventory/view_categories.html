@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="min-h-screen bg-gray-900 py-12 px-6 text-white">
+  <div class="max-w-4xl mx-auto bg-gray-800 rounded-2xl shadow-xl p-8">
+    <h2 class="text-3xl font-bold mb-6 text-center">Manage Categories</h2>
+
+    <div class="overflow-x-auto rounded-xl">
+      <table class="min-w-full text-sm text-left table-auto">
+        <thead class="bg-gray-700 text-gray-300 uppercase text-xs tracking-wider">
+          <tr>
+            <th class="px-6 py-4">ID</th>
+            <th class="px-6 py-4">Name</th>
+            <th class="px-6 py-4 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-700">
+          {% for category in categories %}
+          <tr class="hover:bg-gray-700 transition-colors duration-200">
+            <td class="px-6 py-4 font-medium text-gray-100">{{ category.id }}</td>
+            <td class="px-6 py-4">{{ category.name }}</td>
+            <td class="px-6 py-4 text-center space-x-4">
+              <a href="{% url 'edit_category' category.id %}" class="text-indigo-400 hover:text-indigo-300 font-semibold">Edit</a>
+              <a href="{% url 'delete_category' category.id %}"
+                 onclick="return confirm('Delete this category?');"
+                 class="text-red-400 hover:text-red-300 font-semibold">Delete</a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="3" class="text-center py-6 text-gray-500">No categories found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

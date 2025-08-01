@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Dark Background -->
+<div class="bg-gradient-to-b from-gray-900 to-gray-800 min-h-screen text-gray-100">
+
+  <!-- Navbar -->
+<header class="bg-gray-900 shadow-sm top-0 z-50" x-data="{ cartOpen: false }">
+  <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+    <!-- Logo -->
+    <a href="/" class="text-3xl font-extrabold tracking-tight text-blue-400 select-none">
+      INF<span class="text-white">LOW</span>
+    </a>
+
+    <!-- Navigation -->
+    <div class="flex items-center space-x-4 text-sm text-gray-300">
+      {% if user.is_authenticated and not user.is_superuser %}
+        <span>Welcome, {{ user.first_name|default:user.username }}!</span>
+
+        <!-- Cart Icon -->
+        <button @click="cartOpen = true" class="relative text-white hover:text-blue-400 transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+               viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          </svg>
+          <!-- Optional cart count badge -->
+          {% if cart_item_count %}
+          <span class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+            {{ cart_item_count }}
+          </span>
+          {% endif %}
+        </button>
+
+        <a href="{% url 'account_info' %}" class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">
+          My Account
+        </a>
+        <a href="{% url 'logout_user' %}" class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition">
+          Logout
+        </a>
+      {% else %}
+        <a href="{% url 'login' %}" class="px-4 py-2 rounded-lg text-gray-300 hover:text-blue-400 transition">
+          Login
+        </a>
+        <a href="{% url 'register' %}" class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">
+          Register
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Cart Sidebar -->
+  <div x-show="cartOpen" @click.away="cartOpen = false" class="fixed inset-0 z-50 flex justify-end bg-black bg-opacity-50">
+    <div class="w-96 bg-white dark:bg-gray-900 h-full p-6 overflow-y-auto shadow-lg relative transition-transform transform" x-transition>
+      <!-- Close Button -->
+      <button @click="cartOpen = false" class="absolute top-4 right-4 text-gray-600 dark:text-gray-300 hover:text-red-500">
+        ✕
+      </button>
+
+      <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Your Cart</h2>
+
+      {% if cart_items %}
+        <ul class="divide-y divide-gray-300 dark:divide-gray-700 mb-4">
+          {% for item in cart_items %}
+            <li class="py-3 flex justify-between items-center">
+              <span class="text-gray-700 dark:text-gray-300">{{ item.product.name }}</span>
+              <span class="text-gray-600 dark:text-gray-400">x{{ item.quantity }}</span>
+              <span class="text-gray-900 dark:text-white font-medium">{{ item.total_price }}৳</span>
+                <form method="POST" action="{% url 'remove_cart_item' item.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="text-red-500 hover:text-red-700 text-lg font-bold ml-2">
+                    ✕
+                  </button>
+                </form>
+            </li>
+          {% endfor %}
+        </ul>
+
+        <div class="text-right text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          Subtotal: {{ cart_subtotal }}৳
+        </div>
+
+        <a href="{% url 'login' %}" class="w-full inline-block bg-blue-600 hover:bg-blue-700 text-white text-center px-4 py-2 rounded-lg transition">
+          Proceed to Checkout
+        </a>
+      {% else %}
+        <p class="text-gray-600 dark:text-gray-300">Your cart is empty.</p>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+
+  <!-- Hero Section -->
+  <section class="py-10 text-center">
+    <h1 class="text-4xl font-bold text-white tracking-tight mb-4">
+      Welcome to <span class="text-blue-400">INFLOW</span>
+    </h1>
+    <p class="text-gray-300 text-lg">
+      Your trusted tech destination for premium PC components and accessories — all at unbeatable prices.
+    </p>
+  </section>
+
+  <!-- Search Bar -->
+  <div class="mb-10 flex justify-center px-4">
+    <form method="get" action="{% url 'storefront_home' %}" class="flex w-full max-w-2xl">
+      <input
+        type="text"
+        name="q"
+        placeholder="Search products..."
+        class="flex-grow px-5 py-3 rounded-l-lg border border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+      />
+      <button
+        type="submit"
+        class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-r-lg hover:bg-blue-700 transition"
+      >
+        Search
+      </button>
+    </form>
+  </div>
+
+  <!-- Category Grid -->
+  <div class="max-w-7xl mx-auto px-4 pb-20">
+    <h2 class="text-2xl font-bold text-gray-100 mb-6 text-center">🗂️ Shop by Category</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      {% for category in categories %}
+        <a href="{% url 'category_products' category.id %}"
+           class="group bg-gray-800 rounded-2xl shadow-md hover:bg-gray-700 hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1 p-5 flex flex-col items-center text-center hover:ring-1 hover:ring-blue-400">
+
+          <!-- Category Image -->
+          {% if category.image %}
+            <img src="{{ category.image.url }}" alt="{{ category.name }}"
+                 class="h-40 w-40 object-cover rounded-xl border border-gray-600 group-hover:scale-105 transition-transform duration-300">
+          {% else %}
+            <div class="h-40 w-40 bg-gray-700 text-gray-400 flex items-center justify-center rounded-xl border border-gray-600">
+              <span class="text-sm">No Image</span>
+            </div>
+          {% endif %}
+
+          <!-- Category Name -->
+          <h3 class="mt-4 text-lg font-semibold text-white group-hover:text-blue-400 transition-colors duration-300">
+            {{ category.name }}
+          </h3>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <script>
+  window.onpageshow = function(event) {
+    if (event.persisted) {
+      // Page is loaded from back/forward cache
+      window.location.reload();
+    }
+  };
+</script>
+
+</div>
+
+{% endblock %}

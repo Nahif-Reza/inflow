@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-tr from-gray-900 via-gray-800 to-gray-900 py-12 px-4 sm:px-6 lg:px-8 text-gray-200">
+  <div class="max-w-4xl w-full bg-gray-900 bg-opacity-70 backdrop-blur-sm p-10 rounded-2xl shadow-lg border border-gray-700">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-extrabold text-white">Create an Account</h2>
+      <p class="mt-2 text-sm text-blue-400">
+        Join <span class="font-semibold text-blue-500">INFLOW</span> and start shopping smarter
+      </p>
+    </div>
+    {% include 'partials/messages.html' %}
+    <form method="post" class="space-y-6">
+      {% csrf_token %}
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- First Name -->
+        <div>
+          <label for="first_name" class="block text-sm font-medium text-blue-300">First Name</label>
+          <input id="first_name" name="first_name" type="text" required
+            class="appearance-none rounded-lg w-full px-4 py-3 bg-gray-800 border border-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-white"
+            placeholder="Your first name">
+        </div>
+
+        <!-- Last Name -->
+        <div>
+          <label for="last_name" class="block text-sm font-medium text-blue-300">Last Name</label>
+          <input id="last_name" name="last_name" type="text" required
+            class="appearance-none rounded-lg w-full px-4 py-3 bg-gray-800 border border-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-white"
+            placeholder="Your last name">
+        </div>
+
+        <!-- Phone Number -->
+        <div>
+          <label for="phone_number" class="block text-sm font-medium text-blue-300">Phone Number</label>
+          <input id="phone_number" name="phone_number" type="tel" required
+            class="appearance-none rounded-lg w-full px-4 py-3 bg-gray-800 border border-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-white"
+            placeholder="+880 1XXXXXXXXX">
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-blue-300">Email</label>
+          <input id="email" name="email" type="email" required
+            class="appearance-none rounded-lg w-full px-4 py-3 bg-gray-800 border border-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-white"
+            placeholder="you@example.com">
+        </div>
+
+        <!-- Username -->
+        <div>
+          <label for="username" class="block text-sm font-medium text-blue-300">Username</label>
+          <input id="username" name="username" type="text" required
+            class="appearance-none rounded-lg w-full px-4 py-3 bg-gray-800 border border-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-white"
+            placeholder="Choose a username">
+        </div>
+
+        <!-- Address -->
+        <div class="md:col-span-2">
+          <label for="address" class="block text-sm font-medium text-blue-300">Address</label>
+          <textarea id="address" name="address" rows="3" required
+            class="appearance-none rounded-lg w-full px-4 py-3 bg-gray-800 border border-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-white"
+            placeholder="Your full address"></textarea>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label for="password1" class="block text-sm font-medium text-blue-300">Password</label>
+          <input id="password1" name="password1" type="password" required
+            class="appearance-none rounded-lg w-full px-4 py-3 bg-gray-800 border border-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-white"
+            placeholder="Create a password">
+        </div>
+
+        <!-- Confirm Password -->
+        <div>
+          <label for="password2" class="block text-sm font-medium text-blue-300">Confirm Password</label>
+          <input id="password2" name="password2" type="password" required
+            class="appearance-none rounded-lg w-full px-4 py-3 bg-gray-800 border border-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-white"
+            placeholder="Repeat your password">
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div>
+        <button type="submit"
+          class="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition">
+          Create Account
+        </button>
+      </div>
+    </form>
+
+    <!-- Login redirect -->
+    <div class="mt-6 text-sm text-center text-blue-400">
+      Already have an account?
+      <a href="{% url 'login' %}" class="text-blue-500 hover:underline">Login</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

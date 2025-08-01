@@ -5,7 +5,7 @@
 <div class="max-w-3xl mx-auto mt-12 p-10 bg-white rounded-2xl shadow-lg">
   <h1 class="text-3xl font-bold text-gray-800 mb-8">Edit Product: <span class="text-blue-600">{{ product.name }}</span></h1>
 
-  <form method="post" novalidate>
+  <form method="post" novalidate enctype="multipart/form-data">
     {% csrf_token %}
 
     <div class="space-y-6">
@@ -31,5 +31,11 @@
       </a>
     </div>
   </form>
+
+  <script>
+  if (performance.getEntriesByType("navigation")[0]?.type === "back_forward") {
+    window.location.href = "{% url 'product_list' %}";
+  }
+</script>
 </div>
 {% endblock %}

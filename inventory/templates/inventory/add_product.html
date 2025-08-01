@@ -5,7 +5,7 @@
 <div class="max-w-3xl mx-auto mt-10 p-8 bg-white rounded-xl shadow-md">
   <h1 class="text-2xl font-bold mb-6 text-gray-800">Add New Product</h1>
 
-  <form method="POST" novalidate>
+  <form method="POST" novalidate enctype="multipart/form-data">
     {% csrf_token %}
 
     <div class="space-y-6">

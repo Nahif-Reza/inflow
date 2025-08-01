@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="min-h-screen bg-gray-950 text-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto space-y-12">
+
+    <!-- Header -->
+    <div class="text-center">
+      <h2 class="text-4xl font-extrabold tracking-tight text-white mb-2">My Account</h2>
+      <p class="text-gray-400 text-sm">Manage your personal information and order status</p>
+    </div>
+
+    <!-- User Info -->
+    <section class="bg-gray-900 rounded-2xl p-8 shadow-xl space-y-4 border border-gray-800">
+      <h3 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+        <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" stroke-width="1.5"
+          viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round"
+          d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933
+          17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+        Account Information
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-300">
+        <p><span class="font-medium text-gray-400">Name:</span> {{ user.first_name }} {{ customer.user.last_name }}</p>
+        <p><span class="font-medium text-gray-400">Username:</span> {{ user.username }}</p>
+        <p><span class="font-medium text-gray-400">Phone:</span> {{ customer.phone }}</p>
+        <p><span class="font-medium text-gray-400">Email:</span> {{ user.email }}</p>
+        <p><span class="font-medium text-gray-400">Address:</span> {{ customer.address }}</p>
+      </div>
+    </section>
+
+    <!-- Settings -->
+    <section class="bg-gray-900 rounded-2xl p-8 shadow-xl space-y-8 border border-gray-800">
+      <h3 class="text-2xl font-semibold flex items-center gap-2">
+        <svg class="w-6 h-6 text-teal-400" fill="none" stroke="currentColor" stroke-width="1.5"
+          viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round"
+          d="M12 4.5v15m7.5-7.5h-15" /></svg>
+        Settings
+      </h3>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a href="{% url 'update_profile' %}" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition text-center">
+          Update Profile
+        </a>
+        <a href="{% url 'change_password' %}" class="px-6 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-semibold transition text-center">
+          Change Password
+        </a>
+      </div>
+    </section>
+
+    <!-- Order Summary -->
+    <section class="space-y-4">
+      <h3 class="text-2xl font-semibold text-white mb-2">Order Summary</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div class="bg-emerald-600 p-6 rounded-xl shadow-lg text-center">
+          <h4 class="text-lg font-medium">Completed</h4>
+          <p class="text-3xl font-bold">{{ completed }}</p>
+        </div>
+        <div class="bg-amber-500 p-6 rounded-xl shadow-lg text-center">
+          <h4 class="text-lg font-medium">Pending</h4>
+          <p class="text-3xl font-bold">{{ pending }}</p>
+        </div>
+        <div class="bg-rose-600 p-6 rounded-xl shadow-lg text-center">
+          <h4 class="text-lg font-medium">Cancelled</h4>
+          <p class="text-3xl font-bold">{{ cancelled }}</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+{% endblock %}

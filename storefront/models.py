@@ -1,3 +1,5 @@
+from itertools import product
+
 from django.db import models
 from inventory.models import Product
 from django.contrib.auth.models import User
@@ -15,6 +17,12 @@ class Cart(models.Model):
     customer = models.OneToOneField(Customer, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def get_subtotal(self):
+        subtotal = 0
+        for item in self.cart_items.all():
+            subtotal += item.product.sell_price * item.quantity
+        return subtotal
+
     def __str__(self):
         return f"Cart of {self.customer.user.first_name}"
 
@@ -23,14 +31,21 @@ class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
 
+    class Meta:
+        unique_together = ('cart', 'product')
+
+    @property
+    def total_price(self):
+        return self.product.sell_price * self.quantity
+
+
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     placed_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=[
         ("pending", "Pending"),
-        ("paid", "Paid"),
-        ("shipped", "Shipped"),
-        ("delivered", "Delivered")
+        ("completed", "Completed"),
+        ("cancelled", "Cancelled")
     ], default="pending")
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     delivery_option = models.CharField(max_length=20, choices=[
@@ -46,6 +61,3 @@ class OrderItem(models.Model):
 
     def get_subtotal(self):
         return self.unit_price * self.quantity
-
-
-

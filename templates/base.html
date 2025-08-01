@@ -1,14 +1,59 @@
+<!--storeadmin-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>INFLOW Manager</title>
+    <title>INFLOW</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- ✅ Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+{% if messages %}
+  <div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50">
+    {% for message in messages %}
+      <div class="px-4 py-2 rounded shadow text-white
+                  {% if message.tags == 'success' %}
+                      bg-green-500
+                  {% elif message.tags == 'error' %}
+                      bg-red-500
+                  {% elif message.tags == 'warning' %}
+                      bg-yellow-500 text-black
+                  {% elif message.tags == 'info' %}
+                      bg-blue-500
+                  {% else %}
+                      bg-gray-500
+                  {% endif %}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+
+  <style>
+    @keyframes fade-in-out {
+      0% { opacity: 0; transform: translateY(-10px); }
+      10%, 90% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-10px); }
+    }
+    .animate-fade-in-out {
+      animation: fade-in-out 4s ease forwards;
+    }
+  </style>
+
+  <script>
+    // Remove toast after 4 seconds
+    setTimeout(() => {
+      const container = document.getElementById('toast-container');
+      if (container) {
+        container.remove();
+      }
+    }, 4000);
+  </script>
+
+
+{% endif %}
 
     {% block content %}
     {% endblock %}
